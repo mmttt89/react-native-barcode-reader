@@ -60,7 +60,7 @@ export default class BarcodeScanner extends React.Component {
           }}
           captureAudio={false}
         >
-          <BarcodeFinder width={280} height={320} borderColor="#5ef24b" borderWidth={2} />
+          <BarcodeFinder width={280} height={320} />
         </RNCamera>
         <View style={styles.bottomBox}>
           <View style={styles.headerBox}>
