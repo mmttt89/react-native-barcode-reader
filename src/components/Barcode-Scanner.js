@@ -1,7 +1,11 @@
-import React, { Component } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import React from 'react';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { RNCamera } from "react-native-camera";
-export default class BarcodeScanner extends Component {
+import BarcodeFinder from "./Barcode-Finder";
+import TorchButton from "./Torch-Button";
+
+export default class BarcodeScanner extends React.Component {
 
   constructor(props) {
     super(props);
@@ -19,14 +23,14 @@ export default class BarcodeScanner extends Component {
     if (barcode.data !== e.data || barcode.type !== e.type) {
       let barcode = { data: e.data, type: e.type }
       this.setState({ barcode });
-      alert("Barcode value is" + e.data, "Barcode type is" + e.type);
+      alert(`Barcode value is ${e.data}`);
     }
   }
   handleTourch = (value) => {
     if (value === true) {
-      this.setState({ torchOn: false }, () => console.log(">>>>>>>>", this.state.torchOn));
+      this.setState({ torchOn: false });
     } else {
-      this.setState({ torchOn: true }, () => console.log(">>>>>>>>", this.state.torchOn));
+      this.setState({ torchOn: true });
     }
   }
   handleCameraReady = () => {
@@ -42,9 +46,11 @@ export default class BarcodeScanner extends Component {
         <RNCamera
           onCameraReady={this.handleCameraReady}
           onBarCodeRead={this.onBarCodeRead}
+          barcodeFinderWidth={280}
+          barcodeFinderHeight={320}
           style={styles.camera}
           type={RNCamera.Constants.Type.back}
-          flashMode={(isCameraReady && torchOn) ? RNCamera.Constants.FlashMode.on : RNCamera.Constants.FlashMode.off}
+          flashMode={(isCameraReady && torchOn) ? RNCamera.Constants.FlashMode.torch : RNCamera.Constants.FlashMode.off}
           ref={cam => this.camera = cam}
           androidCameraPermissionOptions={{
             title: 'Permission to use camera',
@@ -54,22 +60,21 @@ export default class BarcodeScanner extends Component {
           }}
           captureAudio={false}
         >
-          <View style={styles.bottomBox}>
-            <View style={styles.headerBox}>
-              <Text style={styles.headerText}>BARCODE SCANNER</Text>
+          <BarcodeFinder width={280} height={320} borderColor="#5ef24b" borderWidth={2} />
+        </RNCamera>
+        <View style={styles.bottomBox}>
+          <View style={styles.headerBox}>
+            <View style={{ width: wp('20%') }}>
             </View>
-            <View style={styles.barcode}>
-              <Text style={{ marginBottom: 5 }}>BARCODE DATA: {barcode.data}</Text>
-              <Text style={{ marginBottom: 5 }}>BARCODE TYPE: {barcode.type}</Text>
+            <Text style={styles.headerText}>BARCODE SCANNER</Text>
+            <View style={{ width: wp('20%') }}>
+              <TorchButton torchOn={torchOn} handleTourch={this.handleTourch} />
             </View>
           </View>
-        </RNCamera>
-        <View style={styles.bottomOverlay}>
-          <TouchableOpacity onPress={() => this.handleTourch(torchOn)}>
-            <Text style={[styles.torchIcon, { marginLeft: 20, color: "white" }]}>
-              {torchOn ? "On" : "Off"}
-            </Text>
-          </TouchableOpacity>
+          <View style={styles.barcode}>
+            <Text style={{ marginBottom: 5 }}>BARCODE DATA: {barcode.data}</Text>
+            <Text style={{ marginBottom: 5 }}>BARCODE TYPE: {barcode.type}</Text>
+          </View>
         </View>
       </View>
     );
@@ -83,7 +88,7 @@ const styles = StyleSheet.create({
   camera: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   bottomBox: {
     width: "100%",
@@ -93,7 +98,8 @@ const styles = StyleSheet.create({
   },
   headerBox: {
     width: "100%",
-    justifyContent: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: 'white',
   },
@@ -103,11 +109,6 @@ const styles = StyleSheet.create({
   barcode: {
     width: "100%",
     paddingHorizontal: 10
-  },
-  torchIcon: {
-    margin: 5,
-    height: 40,
-    width: 40
   },
   bottomOverlay: {
     position: "absolute",
