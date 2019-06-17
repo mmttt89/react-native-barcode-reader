@@ -1,10 +1,10 @@
 import React from "react";
-import BarcodeScanner from "@Components/Barcode-Scanner";
+import RootNavigations from "@Navigations/Root-Navigations";
 
 class Root extends React.Component {
     render() {
         return (
-            <BarcodeScanner />            
+            <RootNavigations />            
         )
     }
 }

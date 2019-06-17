@@ -9,7 +9,7 @@ export default class BarcodeFinder extends Component {
         return (
             <View style={styles.container}>
                 <View style={[styles.finder, { width: width, height: height }]}>
-                    <LottieView source={require('../assets/animations/code-scanner1.json')} autoPlay loop />
+                    <LottieView source={require('../../assets/animations/code-scanner1.json')} autoPlay loop />
                 </View>
             </View>
         );
