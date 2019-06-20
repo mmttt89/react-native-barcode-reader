@@ -4,7 +4,7 @@ import { View, StyleSheet, Text } from "react-native";
 const Layout = () => (
     <View style={styles.container}>
         <Text style={styles.text}>
-            WELLCOME
+            BARCODE READER
         </Text>
     </View>
 )
@@ -19,6 +19,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     text: {
+        fontSize: 20,
         fontWeight: '900'
     }
 }) 

@@ -10,9 +10,13 @@ export default class BarcodeScanner extends React.Component {
             isCameraReady: false,
             barcode: {
                 data: '',
-                type: ''
+                type: '',
+                isLoading: true
             }
         }
+    }
+    componentDidMount() {
+        this.setState({ isLoading: false })
     }
 
     onBarCodeRead = (e) => {
@@ -37,10 +41,11 @@ export default class BarcodeScanner extends React.Component {
     }
 
     render() {
-        const { torchOn, isCameraReady, barcode } = this.state;
+        const { torchOn, isCameraReady, barcode, isLoading } = this.state;
         const { navigation } = this.props;
         return (
             <Layout
+                isLoading={isLoading}
                 torchOn={torchOn}
                 isCameraReady={isCameraReady}
                 barcode={barcode}
